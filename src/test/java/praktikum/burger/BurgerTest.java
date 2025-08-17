@@ -1,6 +1,7 @@
 package praktikum.burger;
 
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import praktikum.Bun;
@@ -38,8 +39,10 @@ public class BurgerTest {
         burger.addIngredient(firstIngredient);
         burger.addIngredient(secondIngredient);
         burger.removeIngredient(1);
-        assertEquals(1, burger.ingredients.size());
-        assertEquals(burger.ingredients.get(0), firstIngredient);
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(1).isEqualTo(burger.ingredients.size());
+        softly.assertThat(burger.ingredients.get(0)).isEqualTo(firstIngredient);
+        softly.assertAll();
     }
 
     @Test
@@ -49,8 +52,10 @@ public class BurgerTest {
         burger.addIngredient(firstIngredient);
         burger.addIngredient(secondIngredient);
         burger.moveIngredient(0, 1);
-        assertEquals(burger.ingredients.get(0), secondIngredient);
-        assertEquals(burger.ingredients.get(1), firstIngredient);
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(burger.ingredients.get(0)).isEqualTo(secondIngredient);
+        softly.assertThat(burger.ingredients.get(1)).isEqualTo(firstIngredient);
+        softly.assertAll();
     }
 
     @Test

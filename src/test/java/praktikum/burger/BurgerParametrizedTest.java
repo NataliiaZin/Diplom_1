@@ -1,5 +1,6 @@
 package praktikum.burger;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -9,9 +10,6 @@ import praktikum.IngredientType;
 
 import java.util.Arrays;
 import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class BurgerParametrizedTest {
@@ -26,7 +24,7 @@ public class BurgerParametrizedTest {
         this.ingredientPrice = ingredientPrice;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Тип ингридиента: {0}, название ингридиента: {1}, Цена: {2} ")
     public static Collection<Object[]> ingredientData() {
         return Arrays.asList(new Object[][]{
                 {IngredientType.FILLING, "Флюоресцентная булка R2-D3", Float.MAX_VALUE},
@@ -39,7 +37,9 @@ public class BurgerParametrizedTest {
         Burger burger = new Burger();
         Ingredient ingredient = new Ingredient(ingredientType, ingredientName, ingredientPrice);
         burger.addIngredient(ingredient);
-        assertEquals(1, burger.ingredients.size());
-        assertTrue(burger.ingredients.contains(ingredient));
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(1).isEqualTo(burger.ingredients.size());
+        softly.assertThat(burger.ingredients.get(0)).isEqualTo(ingredient);
+        softly.assertAll();
     }
 }
