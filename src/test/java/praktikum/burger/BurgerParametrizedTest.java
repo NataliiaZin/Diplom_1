@@ -1,6 +1,7 @@
 package praktikum.burger;
 
 import org.assertj.core.api.SoftAssertions;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -11,12 +12,16 @@ import praktikum.IngredientType;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 @RunWith(Parameterized.class)
 public class BurgerParametrizedTest {
 
     private final IngredientType ingredientType;
     private final String ingredientName;
     private final float ingredientPrice;
+    private Ingredient ingredient;
 
     public BurgerParametrizedTest(IngredientType ingredientType, String ingredientName, float ingredientPrice) {
         this.ingredientType = ingredientType;
@@ -32,10 +37,17 @@ public class BurgerParametrizedTest {
         });
     }
 
+    @Before
+    public void setUp() {
+        ingredient = mock(Ingredient.class);
+        when(ingredient.getType()).thenReturn(ingredientType);
+        when(ingredient.getName()).thenReturn(ingredientName);
+        when(ingredient.getPrice()).thenReturn(ingredientPrice);
+    }
+
     @Test
     public void addIngredientTest() {
         Burger burger = new Burger();
-        Ingredient ingredient = new Ingredient(ingredientType, ingredientName, ingredientPrice);
         burger.addIngredient(ingredient);
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(1).isEqualTo(burger.ingredients.size());
